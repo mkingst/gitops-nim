@@ -32,14 +32,8 @@ jobs:
         run: echo "NGINX_CONF_CONFIG_FILE=`cat nginx.conf | base64 -w 0`" >> $GITHUB_ENV 
 
       - name: Set environment variable for base64 encoded config file 
-        run: echo "MIME_TYPES_CONFIG_FILE=`cat mime.types | base64 -w 0`" >> $GITHUB_ENV 
-
-      - name: Set environment variable for base64 encoded config file 
         run: echo "DEFAULT_CONF_CONFIG_FILE=`cat conf.d/default.conf | base64 -w 0`" >> $GITHUB_ENV 
-
-      - name: Set environment variable for base64 encoded config file 
-        run: echo "SSL_CONF_CONFIG_FILE=`cat conf.d/ssl.conf | base64 -w 0`" >> $GITHUB_ENV 
 
       - name: API call to Instance Manager 
         run: | 
-          curl --location 'https://${{ vars.NMS_HOSTNAME }}/api/platform/v1/systems/${{ vars.SYSTEM_ID }}/instances/${{ vars.INSTANCE_ID }}/config' --header "accept: application/json" --header "Authorization: Basic ${{ env.NMS_LOGIN }}" --header 'Content-Type: application/json' --data '{"configFiles": {"rootDir": "/etc/nginx","files": [{"contents": "${{ env.NGINX_CONF_CONFIG_FILE }}","name": "/etc/nginx/nginx.conf"},{"contents": "${{ env.MIME_TYPES_CONFIG_FILE }}","name": "/etc/nginx/mime.types"},{"contents": "${{ env.DEFAULT_CONF_CONFIG_FILE }}","name": "/etc/nginx/conf.d/default.conf"},{"contents": "${{ env.SSL_CONF_CONFIG_FILE }}","name": "/etc/nginx/conf.d/ssl.conf"}]},"externalIdType": "git","externalId": "${{ github.sha }}","updateTime": "${{ env.NMS_TIMESTAMP }}"}' 
+          curl --location 'https://${{ vars.NMS_HOSTNAME }}/api/platform/v1/systems/${{ vars.SYSTEM_ID }}/instances/${{ vars.INSTANCE_ID }}/config' --header "accept: application/json" --header "Authorization: Basic ${{ env.NMS_LOGIN }}" --header 'Content-Type: application/json' --data '{"configFiles": {"rootDir": "/etc/nginx","files": [{"contents": "${{ env.NGINX_CONF_CONFIG_FILE }}","name": "/etc/nginx/nginx.conf"},{"contents": "${{ env.DEFAULT_CONF_CONFIG_FILE }}","name": "/etc/nginx/conf.d/default.conf"},]},"externalIdType": "git","externalId": "${{ github.sha }}","updateTime": "${{ env.NMS_TIMESTAMP }}"}' 
